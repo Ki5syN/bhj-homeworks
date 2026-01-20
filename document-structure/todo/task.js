@@ -1,16 +1,17 @@
 const inputField = document.getElementById("task__input")
 const targetList = document.getElementById("tasks__list")
 
+let savedBox = JSON.parse(localStorage.getItem("tasks")) || [];
 
-document.addEventListener("click", (event) => {
-	event.preventDefault();
-	if (event.target.closest("#tasks__add") && inputField.value.trim()) {
+function renderTask() {
+	savedBox.forEach(element => {
+
 		const targetBox = document.createElement("div");
 		targetBox.className = "task";
 
 		const target = document.createElement("div");
 		target.className = "task__title";
-		target.textContent = inputField.value;
+		target.textContent = element;
 
 		const removeTarget = document.createElement("a");
 		removeTarget.className = "task__remove";
@@ -20,8 +21,18 @@ document.addEventListener("click", (event) => {
 		targetBox.appendChild(target)
 		targetBox.appendChild(removeTarget)
 
-		let savedBox = JSON.parse(localStorage.getItem("tasks")) || [];
-		savedBox.push(target.textContent)
+	});
+}
+
+renderTask()
+
+document.addEventListener("click", (event) => {
+
+	if (event.target.closest("#tasks__add") && inputField.value.trim()) {
+
+
+		savedBox = JSON.parse(localStorage.getItem("tasks")) || [];
+		savedBox.push(inputField.value)
 		localStorage.setItem("tasks", JSON.stringify(savedBox))
 
 	}
