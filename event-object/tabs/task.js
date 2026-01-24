@@ -2,6 +2,9 @@ let navigation = document.querySelector(".tab__navigation")
 let contents = document.querySelectorAll(".tab__content")
 
 document.addEventListener("click", (event) => {
+	if(!event.target.classList.contains("tab")){
+		return;
+	}
 	navigation.querySelectorAll(".tab").forEach((e, index) => {
 		if (e === event.target) {
 			e.classList.add("tab_active")
