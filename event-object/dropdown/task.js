@@ -22,7 +22,7 @@ document.addEventListener("click", (event) => {
 	}
 
 	if (event.target.classList.contains("dropdown__value")) {
-		onList(document.querySelector(".dropdown__list"))
+		onList(findGroup.querySelector(".dropdown__list"))
 	}
 
 })
