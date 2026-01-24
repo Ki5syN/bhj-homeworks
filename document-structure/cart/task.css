@@ -1,6 +1,11 @@
 body {
   font-family: Arial;
 }
+
+.cart_hidden {
+  display: none;
+}
+
 .cart__products {
   display: flex;
   justify-content: center;
@@ -13,7 +18,7 @@ body {
 .cart__product-count {
   position: absolute;
   top: 0;
-  right: 0;
+  left: 0;
   border: 2px solid green;
   border-radius: 50%;
   padding: 2px 5px;
@@ -88,4 +93,11 @@ body {
 
 .product-shadow {
   position: absolute;
+}
+
+.image-fly {
+  position: fixed;
+  z-index: 9;
+  pointer-events: none;
+  transition: top 0.7s ease-in-out, left 0.7s ease-in-out;
 }
