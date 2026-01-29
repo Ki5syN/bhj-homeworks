@@ -4,9 +4,20 @@ const targetList = document.getElementById("tasks__list")
 let savedBox = JSON.parse(localStorage.getItem("tasks")) || [];
 
 function renderTask() {
+	targetList.innerHTML = "";
+
 	savedBox.forEach(element => {
 
-		const targetBox = document.createElement("div");
+		targetList.insertAdjacentHTML('afterbegin', `
+			<div class="task">
+			<div class="task__title">
+				${element}
+			</div>
+			<a href="#" class="task__remove">&times;</a>
+			</div>
+			`);
+
+		/**  const targetBox = document.createElement("div");
 		targetBox.className = "task";
 
 		const target = document.createElement("div");
@@ -19,7 +30,7 @@ function renderTask() {
 
 		targetList.appendChild(targetBox)
 		targetBox.appendChild(target)
-		targetBox.appendChild(removeTarget)
+		targetBox.appendChild(removeTarget) */
 
 	});
 }
@@ -27,22 +38,26 @@ function renderTask() {
 renderTask()
 
 document.addEventListener("click", (event) => {
+	event.preventDefault();
+
 
 	if (event.target.closest("#tasks__add") && inputField.value.trim()) {
-
 
 		savedBox = JSON.parse(localStorage.getItem("tasks")) || [];
 		savedBox.push(inputField.value)
 		localStorage.setItem("tasks", JSON.stringify(savedBox))
+		renderTask()
 
 	}
 
 	if (event.target.classList.contains("task__remove")) {
-		const removeElement = event.target.previousElementSibling.textContent
-		let savedTargets = JSON.parse(localStorage.getItem("tasks"));
-		let currentTargets = savedTargets.filter(el => el !== removeElement)
-		localStorage.setItem("tasks", JSON.stringify(currentTargets))
-		event.target.parentElement.remove();
+		const removeElement = event.target.previousElementSibling.textContent.trim();
+
+		savedBox = savedBox.filter(el => el !== removeElement)
+
+		localStorage.setItem("tasks", JSON.stringify(savedBox))
+		renderTask()
+
 
 	}
 
