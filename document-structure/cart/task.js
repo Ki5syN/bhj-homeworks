@@ -3,12 +3,30 @@ const basket = basketBox.querySelector(".cart__products")
 
 let savedBox = JSON.parse(localStorage.getItem("basket")) || [];
 
+function createProduct ({id, img, count, hidden = false}) {
+	let hiddenClass = ""
+	if(hidden) {
+		hiddenClass = "cart_hidden"
+	}
+	
+	basket.insertAdjacentHTML("afterbegin",` 
+			<div class="cart__product" data-id = "${id}" >
+				<img src = "${img}" class="cart__product-image ${hiddenClass}">
+				<div class = "cart__product-count">${count}</div>				
+			</div>`
+		)
+
+	
+}
+
 function renderBasket() {
 	basket.innerHTML = ""
 
-	savedBox.forEach(element => {
+	savedBox.forEach(e => {
 
-		const productBox = document.createElement("div");
+		createProduct({id:e.id, img:e.img, count:e.count, hidden:false })
+
+		/**const productBox = document.createElement("div");
 		productBox.className = "cart__product";
 		productBox.dataset.id = element.id;
 
@@ -22,7 +40,8 @@ function renderBasket() {
 
 		basket.appendChild(productBox);
 		productBox.appendChild(imageBox);
-		productBox.appendChild(productCountBox);
+		productBox.appendChild(productCountBox);*/
+
 	});
 
 	toggleBasket()
@@ -91,7 +110,7 @@ document.addEventListener("click", event => {
 
 		let prodId = product.dataset.id
 		let existingProduct = basket.querySelector(`.cart__product[data-id="${prodId}"]`);
-
+		
 		if (existingProduct) {
 			let count = existingProduct.querySelector(".cart__product-count");
 			count.textContent =
@@ -108,7 +127,15 @@ document.addEventListener("click", event => {
 			localStorage.setItem("basket", JSON.stringify(savedBox));
 		} else {
 
-			let productBox = document.createElement("div");
+			createProduct({
+				id: prodId,
+				img: product.querySelector(".product__image").src,
+				count: product.querySelector(".product__quantity-value").textContent,
+				hidden: true
+
+			})	
+
+			/**let productBox = document.createElement("div");
 			productBox.dataset.id = prodId;
 			productBox.className = "cart__product"
 
@@ -122,8 +149,13 @@ document.addEventListener("click", event => {
 
 			basket.appendChild(productBox);
 			productBox.appendChild(imageProd);
-			productBox.appendChild(productCount);
+			productBox.appendChild(productCount);*/
 
+
+			let productBox = basket.querySelector(`.cart__product[data-id="${prodId}"]`);
+    		let imageProd = productBox.querySelector("img");
+			let productCount = product.querySelector(".product__quantity-value");
+					
 
 			savedBox = JSON.parse(localStorage.getItem("basket")) || [];
 			savedBox.push({
@@ -154,3 +186,6 @@ document.addEventListener("click", event => {
 
 	}
 });
+
+
+		
